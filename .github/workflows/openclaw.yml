@@ -25,24 +25,23 @@ jobs:
           cat <<EOF > ~/.openclaw/openclaw.json
           {
             "models": {
-              "providers": {
-                "openrouter": {
+              "providers": [
+                {
+                  "name": "openrouter",
                   "baseUrl": "https://openrouter.ai/api/v1",
                   "apiKey": "${{ secrets.OPENROUTER_API_KEY }}",
-                  "models": {
-                    "qwen3.6": {
+                  "models": [
+                    {
                       "id": "qwen/qwen3.6-plus-preview:free",
                       "reasoning": true
                     }
-                  }
+                  ]
                 }
-              }
+              ]
             },
             "agents": {
               "defaults": {
-                "qwen3.6": {
-                  "model": "qwen/qwen3.6-plus-preview:free"
-                }
+                "model": "qwen/qwen3.6-plus-preview:free"
               }
             }
           }
