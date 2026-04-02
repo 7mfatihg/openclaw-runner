@@ -25,9 +25,8 @@ jobs:
           cat <<EOF > ~/.openclaw/openclaw.json
           {
             "models": {
-              "providers": [
-                {
-                  "name": "openrouter",
+              "providers": {
+                "openrouter": {
                   "baseUrl": "https://openrouter.ai/api/v1",
                   "apiKey": "${{ secrets.OPENROUTER_API_KEY }}",
                   "models": [
@@ -37,7 +36,7 @@ jobs:
                     }
                   ]
                 }
-              ]
+              }
             },
             "agents": {
               "defaults": {
