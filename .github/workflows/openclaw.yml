@@ -1,0 +1,50 @@
+name: Run OpenClaw with Qwen
+
+on:
+  workflow_dispatch:  # manuel tetikleme
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install OpenClaw
+        run: npm install -g openclaw@latest
+
+      - name: Configure OpenClaw
+        run: |
+          mkdir -p ~/.openclaw
+          cat <<EOF > ~/.openclaw/openclaw.json
+          {
+            "models": {
+              "providers": [
+                {
+                  "name": "openrouter",
+                  "baseUrl": "https://openrouter.ai/api/v1",
+                  "apiKey": "${{ secrets.OPENROUTER_API_KEY }}",
+                  "models": [
+                    {"id": "qwen/qwen3.6-plus-preview:free", "reasoning": true}
+                  ]
+                }
+              ]
+            },
+            "agents": {
+              "defaults": {
+                "models": ["qwen/qwen3.6-plus-preview:free"]
+              }
+            }
+          }
+          EOF
+
+      - name: Run OpenClaw
+        run: |
+          openclaw models scan
+          openclaw agents run
